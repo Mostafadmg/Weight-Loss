@@ -1983,21 +1983,21 @@ const ContentManager = {
               <div class="protocol-text"><strong>Table 1:</strong> If any of these conditions are present, <strong>reject the prescription immediately</strong>. No further information needed.</div>
               <table class="protocol-table">
                 <tr><th>Condition</th><th style="width: 140px;">Action</th></tr>
-                <tr><td><strong>Pancreatitis</strong><br>Including acute or chronic pancreatic insufficiency</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Eating disorders:</strong><br>• Anorexia nervosa<br>• Bulimia nervosa<br>• Binge Eating Disorder (BED)<br>• Avoidant/Restrictive Food Intake Disorder (ARFID)</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Type 1 diabetes</strong><br>Aka Insulin-dependent diabetes mellitus (IDDM)</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Liver cirrhosis</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Liver transplant</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Endocrine disorders</strong> (acromegaly, Cushing’s, Addison’s, congenital adrenal hyperplasia)</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Ulcerative colitis</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Crohn’s disease</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Gastroparesis</strong><br>(Delayed gastric emptying)</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Multiple Endocrine Neoplasia type 2 (MEN2)</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Medullary Thyroid cancer</strong></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Oral diabetic medication</strong> on repeat medication list<br><em>See detailed list below</em></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Medication with Narrow Therapeutic Index</strong> on repeat medication list<br><em>See detailed list below</em></td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Insulin</strong> on repeat medication list</td><td><span class="tag red">Reject</span></td></tr>
-                <tr><td><strong>Thyroid disease</strong><br>(For <strong>Nevolat</strong> prescriptions ONLY)</td><td><span class="tag red">Reject</span></td></tr>
+                <tr><td><strong>🫀 Pancreatitis</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">Including acute or chronic pancreatic insufficiency</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🍽️ Eating Disorders</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">• Anorexia nervosa<br>• Bulimia nervosa<br>• Binge Eating Disorder (BED)<br>• Avoidant/Restrictive Food Intake Disorder (ARFID)</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>💉 Type 1 Diabetes</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">Aka Insulin-dependent diabetes mellitus (IDDM)</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🏥 Liver Cirrhosis</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🏥 Liver Transplant</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🔬 Endocrine Disorders</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">Acromegaly, Cushing's, Addison's, congenital adrenal hyperplasia</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🩺 Ulcerative Colitis</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🩺 Crohn's Disease</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🫃 Gastroparesis</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">Delayed gastric emptying</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🧬 Multiple Endocrine Neoplasia type 2 (MEN2)</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🎗️ Medullary Thyroid Cancer</strong></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>💊 Oral Diabetic Medication</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">On repeat medication list — See detailed list below</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>⚠️ Medication with Narrow Therapeutic Index</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">On repeat medication list — See detailed list below</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>💉 Insulin</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">On repeat medication list</span></td><td><span class="decision-reject">REJECT</span></td></tr>
+                <tr><td><strong>🦋 Thyroid Disease</strong><br><span style="font-size: 0.85em; color: var(--text-muted); font-style: italic;">For <strong>Nevolat</strong> prescriptions ONLY</span></td><td><span class="decision-reject">REJECT</span></td></tr>
               </table>
 
               <div class="protocol-section-title" style="margin-top: 20px;">Oral diabetic medications (reject if on repeat list)</div>
