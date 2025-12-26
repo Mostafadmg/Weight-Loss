@@ -2440,29 +2440,29 @@ details.accordion[open] summary::after {
 /* Column-specific styling for 5-column tables */
 .protocol-table tr:has(th:nth-child(5)) th:nth-child(1),
 .protocol-table tr:has(th:nth-child(5)) ~ tr td:nth-child(1) {
-  width: 18%;
+  width: 16%;
 }
 
 .protocol-table tr:has(th:nth-child(5)) th:nth-child(2),
 .protocol-table tr:has(th:nth-child(5)) ~ tr td:nth-child(2) {
-  width: 12%;
+  width: 11%;
   text-align: left;
 }
 
 .protocol-table tr:has(th:nth-child(5)) th:nth-child(3),
 .protocol-table tr:has(th:nth-child(5)) ~ tr td:nth-child(3) {
-  width: 10%;
+  width: 9%;
   text-align: center;
 }
 
 .protocol-table tr:has(th:nth-child(5)) th:nth-child(4),
 .protocol-table tr:has(th:nth-child(5)) ~ tr td:nth-child(4) {
-  width: 30%;
+  width: 32%;
 }
 
 .protocol-table tr:has(th:nth-child(5)) th:nth-child(5),
 .protocol-table tr:has(th:nth-child(5)) ~ tr td:nth-child(5) {
-  width: 30%;
+  width: 32%;
 }
 
 /* Column-specific styling for 2-column tables (Table 1) */
@@ -2514,7 +2514,7 @@ details.accordion[open] summary::after {
 .protocol-table .decision-reject {
   color: #ffffff;
   font-weight: 700;
-  display: inline-block;
+  display: block;
   padding: 8px 16px;
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   border-radius: 6px;
@@ -2523,13 +2523,15 @@ details.accordion[open] summary::after {
   box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
   text-transform: uppercase;
   white-space: nowrap;
-  margin: 5px 0;
+  margin: 6px 0;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .protocol-table .decision-prescribe {
   color: #ffffff;
   font-weight: 700;
-  display: inline-block;
+  display: block;
   padding: 8px 16px;
   background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
   border-radius: 6px;
@@ -2538,13 +2540,15 @@ details.accordion[open] summary::after {
   box-shadow: 0 2px 4px rgba(22, 163, 74, 0.3);
   text-transform: uppercase;
   white-space: nowrap;
-  margin: 5px 0;
+  margin: 6px 0;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .protocol-table .decision-clinical {
   color: #ffffff;
   font-weight: 700;
-  display: inline-block;
+  display: block;
   padding: 8px 16px;
   background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
   border-radius: 6px;
@@ -2553,15 +2557,17 @@ details.accordion[open] summary::after {
   box-shadow: 0 2px 4px rgba(234, 88, 12, 0.3);
   text-transform: uppercase;
   white-space: nowrap;
-  margin: 5px 0;
+  margin: 6px 0;
+  width: fit-content;
+  max-width: 100%;
 }
 
 /* Checklist styling */
 .protocol-table .checklist-item {
   display: flex;
   align-items: flex-start;
-  margin: 10px 0;
-  line-height: 1.8;
+  margin: 12px 0;
+  line-height: 1.85;
   padding-left: 2px;
   font-size: 13.5px;
 }
@@ -2585,7 +2591,7 @@ details.accordion[open] summary::after {
 /* Macro badge styling */
 .protocol-table .tag {
   font-size: 12px;
-  padding: 7px 14px;
+  padding: 8px 16px;
   font-weight: 700;
   letter-spacing: 0.4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
@@ -2689,26 +2695,26 @@ details.accordion[open] summary::after {
   }
 
   .protocol-table {
-    min-width: 1100px;
+    min-width: 1200px;
     display: table;
   }
 
   .protocol-table th,
   .protocol-table td {
-    padding: 14px 16px;
-    font-size: 13px;
+    padding: 16px 20px;
+    font-size: 13.5px;
   }
 }
 
 @media (max-width: 768px) {
   .protocol-table {
-    min-width: 1000px;
+    min-width: 1150px;
   }
 
   .protocol-table th,
   .protocol-table td {
-    padding: 12px 14px;
-    font-size: 12px;
+    padding: 14px 18px;
+    font-size: 12.5px;
   }
 
   .protocol-table .checklist-item {
@@ -2745,8 +2751,10 @@ details.accordion[open] summary::after {
 /* Tags inside table cells need extra spacing */
 .protocol-table .tag,
 .dose-table .tag {
-  margin: 4px 0;
-  display: inline-block;
+  margin: 6px 0;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .tag.orange {
@@ -3261,7 +3269,7 @@ details.accordion[open] summary::after {
 
 @media (max-width: 992px) {
   .dose-table {
-    min-width: 1000px;
+    min-width: 1100px;
     display: table;
   }
 
@@ -3274,17 +3282,17 @@ details.accordion[open] summary::after {
 
 @media (max-width: 768px) {
   .dose-table {
-    min-width: 900px;
+    min-width: 1000px;
   }
 
   .dose-table th,
   .dose-table td {
-    padding: 12px 14px;
-    font-size: 12px;
+    padding: 14px 18px;
+    font-size: 12.5px;
   }
 
   .dose-table th {
-    padding: 12px 14px;
+    padding: 14px 18px;
   }
 
   .dose-table td strong {
