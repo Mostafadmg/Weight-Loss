@@ -5298,17 +5298,59 @@ const ContentManager = {
           </details>
 
           <details class="accordion">
-            <summary>Time-sensitive conditions — when information is needed (Macro 1)</summary>
+            <summary>Table 2: Time-sensitive conditions — workflow with macros</summary>
             <div class="accordion-body">
-              <div class="protocol-text"><strong>Table 2:</strong> If timing is missing, email the patient (Macro 1). Reject when the timing falls within the contraindication window.</div>
+              <div class="protocol-text"><strong>Table 2:</strong> When timing information is needed, use appropriate macro. Reject when timing falls within contraindication window.</div>
               <table class="protocol-table">
-                <tr><th>Condition</th><th style="width: 150px;">Relevant time-scale</th><th>Action</th></tr>
-                <tr><td><strong>Bariatric Surgery:</strong><br>• Roux-en-Y Gastric Bypass (RYGB)<br>• Sleeve Gastrectomy<br>• Adjustable Gastric Band (Lap-Band)<br>• Biliopancreatic Diversion with Duodenal Switch (BPD/DS)<br>• Mini Gastric Bypass (OAGB – One Anastomosis Gastric Bypass)<br>• Endoscopic Bariatric Procedures (e.g., gastric balloon)</td><td>&lt;12 months</td><td><strong>Reject if under 12 months</strong><br><br>Prescribe if surgery was more than a year ago</td></tr>
-                <tr><td><strong>Cholecystectomy</strong></td><td>&lt;12 months</td><td><strong>Reject if under 12 months</strong><br><br>Prescribe if surgery was more than a year ago</td></tr>
-                <tr><td><strong>On Insulin</strong></td><td>Prescribed within the last 3 months as acute<br><br><strong>OR</strong><br><br>Present on list of repeat medication</td><td><strong>Reject</strong></td></tr>
-                <tr><td><strong>On oral diabetic medication</strong><br>• Sulfonylureas (Diamicron, Daonil, Rastin)<br>• SGLT2 inhibitors (Jardiance, Forxiga, Invokana)<br>• DPP-4 inhibitors (Januvia, Galvus, Trajenta)<br>• Thiazolidinediones (Actos)</td><td>Prescribed within the last 3 months as acute<br><br><strong>OR</strong><br><br>Present on list of repeat medication</td><td><strong>Reject</strong></td></tr>
-                <tr><td><strong>Medication with Narrow Therapeutic Index</strong><br>• Amiodarone<br>• Carbamazepine<br>• Ciclosporin<br>• Clozapine<br>• Digoxin<br>• Fenfluramine<br>• Lithium<br>• Mycophenolate mofetil<br>• Oral methotrexate<br>• Phenobarbital<br>• Phenytoin<br>• Somatrogon<br>• Tacrolimus<br>• Theophylline<br>• Warfarin</td><td>Prescribed within the last 3 months as acute<br><br><strong>OR</strong><br><br>Present on list of repeat medication</td><td><strong>Reject</strong></td></tr>
-                <tr><td><strong>Orlistat</strong><br>• Alli<br>• Xenical</td><td>GLP prescription issued &lt;1 month</td><td><strong>Reject</strong><br><br>Concurrent use is a contraindication</td></tr>
+                <tr>
+                  <th>Condition</th>
+                  <th style="width: 110px;">Timeframe</th>
+                  <th style="width: 110px;">Macro</th>
+                  <th>Before Emailing</th>
+                  <th>After Patient Response</th>
+                </tr>
+                <tr>
+                  <td><strong>Bariatric Surgery</strong><br>• RYGB<br>• Sleeve Gastrectomy<br>• Gastric Band<br>• BPD/DS<br>• Mini Gastric Bypass<br>• Gastric balloon</td>
+                  <td>&lt;12 months</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check SCR for surgery date<br>• If timing unclear → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td><strong>Reject</strong> if &lt;12 months<br><br><strong>Prescribe</strong> if ≥12 months</td>
+                </tr>
+                <tr>
+                  <td><strong>Cholecystectomy</strong><br>(gallbladder removal)</td>
+                  <td>&lt;12 months</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check SCR for surgery date<br>• If timing unclear → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td><strong>Reject</strong> if &lt;12 months<br><br><strong>Prescribe</strong> if ≥12 months</td>
+                </tr>
+                <tr>
+                  <td><strong>Insulin</strong></td>
+                  <td>&lt;3 months<br><strong>OR</strong><br>On repeat list</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check acute meds (last 3 months)<br>• Check repeat medication list<br>• If on repeat list → <strong>reject immediately</strong><br>• If timing unclear → hold + email</td>
+                  <td><strong>Reject</strong> if prescribed within 3 months or on repeat list</td>
+                </tr>
+                <tr>
+                  <td><strong>Oral diabetic meds</strong><br>• Sulfonylureas<br>• SGLT2 inhibitors<br>• DPP-4 inhibitors<br>• Thiazolidinediones</td>
+                  <td>&lt;3 months<br><strong>OR</strong><br>On repeat list</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check acute meds (last 3 months)<br>• Check repeat medication list<br>• If on repeat list → <strong>reject immediately</strong><br>• If timing unclear → hold + email</td>
+                  <td><strong>Reject</strong> if prescribed within 3 months or on repeat list</td>
+                </tr>
+                <tr>
+                  <td><strong>Narrow Therapeutic Index meds</strong><br>• Amiodarone<br>• Carbamazepine<br>• Ciclosporin<br>• Clozapine<br>• Digoxin<br>• Lithium<br>• Warfarin<br>• Others (see full list)</td>
+                  <td>&lt;3 months<br><strong>OR</strong><br>On repeat list</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check acute meds (last 3 months)<br>• Check repeat medication list<br>• If on repeat list → <strong>reject immediately</strong><br>• If timing unclear → hold + email</td>
+                  <td><strong>Reject</strong> if prescribed within 3 months or on repeat list</td>
+                </tr>
+                <tr>
+                  <td><strong>Orlistat</strong><br>• Alli<br>• Xenical</td>
+                  <td>&lt;1 month</td>
+                  <td><a href="#macro-1" class="tag blue">Macro 1</a></td>
+                  <td>• Check SCR for recent Orlistat<br>• If timing unclear → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td><strong>Reject</strong> if &lt;1 month<br><br>Concurrent use contraindicated</td>
+                </tr>
               </table>
               <div class="info-card warning" style="margin-top: 12px;">
                 <div class="info-card-title">Transfer edge case</div>
@@ -5318,34 +5360,44 @@ const ContentManager = {
           </details>
 
           <details class="accordion">
-            <summary>Conditions where information is needed regarding clinical details (Macros 2 / 4 / 5)</summary>
+            <summary>Table 3: Clinical details needed — macros & decision pathway</summary>
             <div class="accordion-body">
-              <div class="protocol-text"><strong>Table 3 (Section 4.2.2):</strong> If you do not have the relevant information, you must reach out to the patient to be able to make a decision.</div>
+              <div class="protocol-text"><strong>Table 3:</strong> When clinical details are needed to make a prescribing decision.</div>
               <table class="protocol-table">
-                <tr><th>Condition</th><th>Relevant information for decision</th><th>Action</th><th style="width: 180px;">Information needed</th></tr>
+                <tr>
+                  <th>Condition</th>
+                  <th style="width: 110px;">Macro</th>
+                  <th>Before Emailing</th>
+                  <th style="width: 160px;">Information to Request</th>
+                  <th>After Patient Response</th>
+                </tr>
                 <tr>
                   <td><strong>Cholelithiasis</strong><br>(gallstones)</td>
-                  <td>No evidence of cholecystectomy</td>
-                  <td>If no evidence, put on hold and gather more information.<br><br><strong>Reject if customer confirms no cholecystectomy</strong></td>
-                  <td><strong>Macro 2</strong><br><br>Cholecystectomy should be confirmed with the patient if not visible on the SCR</td>
+                  <td><a href="#macro-2" class="tag blue">Macro 2</a></td>
+                  <td>• Check SCR for cholecystectomy evidence<br>• If no evidence → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask if patient had cholecystectomy (gallbladder removal surgery)</td>
+                  <td><strong>Reject</strong> if no cholecystectomy<br><br><strong>Prescribe</strong> if cholecystectomy confirmed</td>
                 </tr>
                 <tr>
                   <td><strong>Cholecystitis</strong><br>(gallbladder inflammation)</td>
-                  <td>No evidence of cholecystectomy</td>
-                  <td>If no evidence, put on hold and gather more information.<br><br><strong>Reject if customer confirms no cholecystectomy</strong></td>
-                  <td><strong>Macro 2</strong><br><br>Cholecystectomy should be confirmed with the patient if not visible on the SCR</td>
+                  <td><a href="#macro-2" class="tag blue">Macro 2</a></td>
+                  <td>• Check SCR for cholecystectomy evidence<br>• If no evidence → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask if patient had cholecystectomy (gallbladder removal surgery)</td>
+                  <td><strong>Reject</strong> if no cholecystectomy<br><br><strong>Prescribe</strong> if cholecystectomy confirmed</td>
                 </tr>
                 <tr>
-                  <td><strong>Heart failure (HF)</strong></td>
-                  <td>Stage IV</td>
-                  <td>If there is no information on what stage they have, email the patient.<br><br><strong>Reject if customer confirms stage IV</strong></td>
-                  <td><strong>Macro 4</strong><br><br>Last letter from their cardiologist stating stage or if fit for GLP1</td>
+                  <td><strong>Heart Failure (HF)</strong></td>
+                  <td><a href="#macro-4" class="tag blue">Macro 4</a></td>
+                  <td>• Check SCR for HF stage<br>• If stage unclear → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Request latest cardiology letter stating:<br>• HF stage, OR<br>• Confirmation if fit for GLP-1</td>
+                  <td><strong>Reject</strong> if Stage IV<br><br><strong>Prescribe</strong> if Stage I, II, or III</td>
                 </tr>
                 <tr>
                   <td><strong>Chronic Kidney Disease (CKD)</strong></td>
-                  <td>eGFR &lt;30<br><br>Stage 4</td>
-                  <td>If there is no information on what their eGFR is or what stage they have, email the patient.<br><br><strong>Reject if eGFR is &lt;30</strong></td>
-                  <td><strong>Macro 5</strong><br><br>Last eGFR</td>
+                  <td><a href="#macro-5" class="tag blue">Macro 5</a></td>
+                  <td>• Check SCR for eGFR or CKD stage<br>• If eGFR/stage unclear → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Request:<br>• Most recent eGFR result, OR<br>• Latest specialist letter with CKD details</td>
+                  <td><strong>Reject</strong> if eGFR &lt;30 or Stage 4/5<br><br><strong>Prescribe</strong> if eGFR ≥30 or Stage 1/2/3</td>
                 </tr>
               </table>
             </div>
@@ -5357,48 +5409,55 @@ const ContentManager = {
               <div class="protocol-text"><strong>Table 4:</strong> Additional conditions that require gathering information from the patient to determine safety and prescribing decision.</div>
 
               <table class="protocol-table">
-                <tr><th>Condition</th><th>Relevant information for decision</th><th>Action</th><th style="width: 180px;">Information needed</th></tr>
+                <tr><th>Condition</th><th>Macro</th><th>Before Emailing</th><th>Information to Request</th><th>After Patient Response</th></tr>
                 <tr>
                   <td><strong>Any cancer diagnosis</strong><br>(excluding MEN2 or medullary thyroid cancer)</td>
-                  <td>Active cancer currently undergoing treatment from an oncology team</td>
-                  <td><strong>Information required in all cases</strong><br><br>See section below.</td>
-                  <td><strong>Macro 3</strong></td>
+                  <td><a href="#macro-3" class="tag blue">Macro 3</a></td>
+                  <td>• Check SCR for cancer type and timeline<br>• Always require patient input<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask if:<br>• Currently under oncology care?<br>• Cancer in remission?<br>• Request discharge/latest oncology letter</td>
+                  <td><strong>Reject</strong> if active cancer/undergoing treatment<br><br><strong>Clinical decision</strong> if in remission (review oncology letter)</td>
                 </tr>
                 <tr>
                   <td><strong>Pregnancy</strong></td>
-                  <td>Current pregnancy</td>
-                  <td><strong>More information is needed in all cases</strong><br><br>Once the information is gathered, <strong>REJECT</strong> if currently pregnant, breastfeeding or trying to conceive, or <strong>APPROVE</strong> if none of the above</td>
-                  <td><strong>Macro 6</strong></td>
+                  <td><a href="#macro-6" class="tag blue">Macro 6</a></td>
+                  <td>• Always require confirmation<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask if currently:<br>• Pregnant?<br>• Breastfeeding?<br>• Trying to conceive?</td>
+                  <td><strong>Reject</strong> if pregnant, breastfeeding, or trying to conceive<br><br><strong>Prescribe</strong> if none of the above</td>
                 </tr>
                 <tr>
-                  <td><strong>Dementia / cognitive impairment</strong></td>
-                  <td>Are they safe at home to use the medication?</td>
-                  <td><strong>More information is needed in all cases</strong><br><br>Once the information is gathered, make a clinical decision to prescribe or reject according to the patient's ability to take the medication safely and support around the patient.</td>
-                  <td><strong>Macro 7</strong></td>
+                  <td><strong>Dementia / Cognitive Impairment</strong></td>
+                  <td><a href="#macro-7" class="tag blue">Macro 7</a></td>
+                  <td>• Always require patient/carer input<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask:<br>• Safe to use medication at home?<br>• Support available?<br>• Ability to self-administer?</td>
+                  <td><strong>Clinical decision</strong> based on:<br>• Patient's ability to take medication safely<br>• Support network around patient</td>
                 </tr>
                 <tr>
-                  <td><strong>Chronic malabsorption</strong></td>
-                  <td>Any formal diagnosis</td>
-                  <td><strong>More information is needed in all cases</strong><br><br>If the patient has a formal diagnosis, <strong>reject</strong> the prescription.</td>
-                  <td><strong>Macro 8</strong></td>
+                  <td><strong>Chronic Malabsorption</strong></td>
+                  <td><a href="#macro-8" class="tag blue">Macro 8</a></td>
+                  <td>• Always require confirmation<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Ask if patient has formal diagnosis of chronic malabsorption</td>
+                  <td><strong>Reject</strong> if formal diagnosis confirmed<br><br><strong>Prescribe</strong> if no formal diagnosis</td>
                 </tr>
                 <tr>
-                  <td><strong>Depression or Anxiety</strong><br><br>Contraindication - acutely mentally unwell</td>
-                  <td>Added to SCR &lt;3 months ago<br><br>If the entry is older than 3 months, ok to prescribe<br><br>The use of antidepressants can be used as a proxy for this area as well</td>
-                  <td><strong>Reject</strong> if under 3 months<br><strong>Prescribe</strong> if exactly 3 months or more<br><br><strong>Reject</strong> if new antidepressant or dose increase in the last 3 months<br><strong>Prescribe</strong> if new antidepressant medication or increased dose was exactly 3 months or more</td>
-                  <td><strong>Macro 9</strong></td>
+                  <td><strong>Depression or Anxiety</strong><br><br><span style="font-size: 0.9em; color: #e74c3c;">Contraindication: acutely mentally unwell</span></td>
+                  <td><a href="#macro-9" class="tag blue">Macro 9</a></td>
+                  <td>• Check SCR entry date<br>• Check antidepressant start/dose change dates<br>• If &lt;3 months → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Request confirmation of:<br>• When condition added to SCR<br>• Any new antidepressants or dose changes in last 3 months</td>
+                  <td><strong>Reject</strong> if entry &lt;3 months old<br>OR new antidepressant/dose increase in last 3 months<br><br><strong>Prescribe</strong> if ≥3 months</td>
                 </tr>
                 <tr>
-                  <td><strong>Active Suicidal ideation</strong></td>
-                  <td>Added to SCR in the last year</td>
-                  <td><strong>Reject</strong> if under 12 months<br><strong>Prescribe</strong> if exactly 12 months or more</td>
-                  <td><strong>Macro 9</strong></td>
+                  <td><strong>Active Suicidal Ideation</strong></td>
+                  <td><a href="#macro-9" class="tag blue">Macro 9</a></td>
+                  <td>• Check SCR entry date<br>• If &lt;12 months → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Request confirmation of when suicidal ideation was added to SCR</td>
+                  <td><strong>Reject</strong> if &lt;12 months<br><br><strong>Prescribe</strong> if ≥12 months</td>
                 </tr>
                 <tr>
-                  <td><strong>Current Alcohol abuse or dependence</strong></td>
-                  <td>Added to SCR in the last year</td>
-                  <td><strong>Reject</strong> if under 12 months or current alcohol abuse<br><strong>Prescribe</strong> if exactly 12 months or more</td>
-                  <td><strong>Macro 10</strong></td>
+                  <td><strong>Current Alcohol Abuse or Dependence</strong></td>
+                  <td><a href="#macro-10" class="tag blue">Macro 10</a></td>
+                  <td>• Check SCR entry date<br>• If &lt;12 months or "current" → hold + email<br>• Add tag: <span class="tag orange">Pending Customer Response</span></td>
+                  <td>Request confirmation of:<br>• When alcohol abuse was added to SCR<br>• Current alcohol use status</td>
+                  <td><strong>Reject</strong> if &lt;12 months or current abuse<br><br><strong>Prescribe</strong> if ≥12 months and no current abuse</td>
                 </tr>
               </table>
 
