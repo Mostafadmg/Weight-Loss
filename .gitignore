@@ -1,0 +1,8 @@
+# Ignore old/backup files
+glp1-prescribing-portal (1).html
+old-glp.html
+package-lock.json
+
+# Ignore system files
+.DS_Store
+Thumbs.db

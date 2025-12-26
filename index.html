@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="GLP-1 Prescribing Portal - Safe prescribing assistant for Mounjaro, Wegovy & Nevolat"
+    />
+    <title>GLP-1 Prescribing Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=Manrope:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="app">
+      <!-- Sidebar Navigation -->
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </div>
+            <div class="logo-text-container">
+              <span class="logo-text">GLP-1 Portal</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-nav">
+          <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <div class="nav-item active" data-page="dashboard">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+              </svg>
+              Dashboard
+            </div>
+            <div class="nav-item" data-page="checklists">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+              </svg>
+              Checklists
+              <span class="badge">5</span>
+            </div>
+            <div class="nav-item" data-page="transfer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 1l4 4-4 4" />
+                <path d="M3 11V9a4 4 0 014-4h14" />
+                <path d="M7 23l-4-4 4-4" />
+                <path d="M21 13v2a4 4 0 01-4 4H3" />
+              </svg>
+              Transfer Patients
+            </div>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Protocols</div>
+            <div class="nav-item" data-page="proto-core">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+              </svg>
+              Core Checks
+            </div>
+            <div class="nav-item" data-page="proto-scr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" />
+                <path d="M9 12l2 2 4-5" />
+              </svg>
+              SCR Screening
+            </div>
+            <div class="nav-item" data-page="proto-pue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12h6M12 9v6" />
+                <circle cx="12" cy="12" r="10" />
+              </svg>
+              Previous Use Evidence
+            </div>
+            <div class="nav-item" data-page="proto-titration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20V10M18 20V4M6 20v-4" />
+              </svg>
+              Titration & Gap
+            </div>
+            <div class="nav-item" data-page="proto-weight">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v18M3 12h18" />
+                <circle cx="12" cy="12" r="9" />
+              </svg>
+              Weight Monitoring
+            </div>
+            <div class="nav-item" data-page="proto-switching">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 3l4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16" />
+              </svg>
+              Switching & Side Effects
+            </div>
+            <div class="nav-item" data-page="proto-reviews">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
+              </svg>
+              6 Month Reviews
+            </div>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Reference</div>
+            <div class="nav-item" data-page="definitions">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+              </svg>
+              Definitions
+            </div>
+            <div class="nav-item" data-page="consultation">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4" />
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+              </svg>
+              Consultation Questions
+            </div>
+            <div class="nav-item" data-page="contraindications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+              </svg>
+              Contraindications
+            </div>
+            <div class="nav-item" data-page="titration-guide">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 20V10M18 20V4M6 20v-4" />
+              </svg>
+              Titration Guide
+            </div>
+            <div class="nav-item" data-page="rejections">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+              Rejection Reasons
+            </div>
+            <div class="nav-item" data-page="tags">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"
+                />
+                <line x1="7" y1="7" x2="7.01" y2="7" />
+              </svg>
+              Tags Reference
+            </div>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-title">Version</div>
+            <a href="old-glp.html" class="nav-item nav-link" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              Old Version
+              <svg
+                class="external-link"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main" id="mainContent">
+        <header class="header">
+          <div class="header-left">
+            <h1 id="page-title">Prescribing Dashboard</h1>
+            <p id="page-subtitle">Select a prescription type to begin safety checks</p>
+          </div>
+          <div class="header-right">
+            <div class="search-container">
+              <svg
+                class="search-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="text"
+                id="globalSearch"
+                class="search-input"
+                placeholder="Search conditions, medications, BMI, protocols..."
+                aria-label="Global search"
+              />
+              <button
+                class="search-clear"
+                id="searchClear"
+                aria-label="Clear search"
+                style="display: none"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div class="theme-toggle-wrapper">
+              <select id="fontSelector" class="font-selector" aria-label="Select font">
+                <option value="Poppins">Poppins</option>
+                <option value="Inter">Inter</option>
+                <option value="Outfit">Outfit</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Manrope">Manrope</option>
+              </select>
+              <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                <span class="toggle-track">
+                  <span class="toggle-thumb"></span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <div class="content" id="contentArea">
+          <!-- Content will be loaded dynamically -->
+        </div>
+      </main>
+    </div>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
