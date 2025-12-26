@@ -109,21 +109,50 @@ const ThemeManager = {
 const SearchManager = {
   searchData: [],
   resultsContainer: null,
+  allTabsTextIndex: null,
+  latestFindSummary: null,
+  pendingNavigation: null,
+
+  globalFindState: {
+    terms: [],
+    marks: [],
+    index: -1,
+  },
+
+  localFindState: {
+    terms: [],
+    marks: [],
+    index: -1,
+  },
 
   init() {
     this.buildSearchIndex();
     const searchInput = document.getElementById("globalSearch");
     const searchClear = document.getElementById("searchClear");
 
+    const prevOccurrence = document.getElementById("prevOccurrence");
+    const nextOccurrence = document.getElementById("nextOccurrence");
+
     if (searchInput) {
       searchInput.addEventListener(
         "input",
-        Utils.debounce((e) => this.handleSearch(e.target.value), 300)
+        Utils.debounce((e) => this.handleGlobalQuery(e.target.value), 220)
       );
 
       searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           this.clearSearch();
+          return;
+        }
+
+        // Ctrl+F style navigation in current tab
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (e.shiftKey) {
+            this.gotoOccurrence(-1, "global");
+          } else {
+            this.gotoOccurrence(1, "global");
+          }
         }
       });
     }
@@ -132,12 +161,327 @@ const SearchManager = {
       searchClear.addEventListener("click", () => this.clearSearch());
     }
 
+    if (prevOccurrence) {
+      prevOccurrence.addEventListener("click", () => this.gotoOccurrence(-1, "global"));
+    }
+    if (nextOccurrence) {
+      nextOccurrence.addEventListener("click", () => this.gotoOccurrence(1, "global"));
+    }
+
     // Close search results when clicking outside
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".search-container")) {
         this.hideResults();
       }
     });
+  },
+
+  // Runs both: (1) structured navigation search (dropdown), and (2) Ctrl+F-style highlight within current tab.
+  handleGlobalQuery(rawQuery) {
+    this.handleSearch(rawQuery);
+    this.runFind(rawQuery, {
+      mode: "global",
+      scopeEl: document.getElementById("contentArea"),
+      controls: {
+        controlsId: "occurrenceControls",
+        countId: "occurrenceCount",
+      },
+      highlightClass: "find-highlight--global",
+    });
+  },
+
+  getQueryTerms(rawQuery) {
+    if (!rawQuery) return [];
+
+    // Split on common separators (including new lines) but keep multi-word phrases intact.
+    return rawQuery
+      .toLowerCase()
+      .split(/[,;\.\-\/\|\n\r]+/)
+      .map((t) => t.trim())
+      .filter((t) => t.length > 1);
+  },
+
+  buildAllTabsTextIndex() {
+    // Cache the plain text for each page so we can count matches "across the whole website".
+    const titles = {
+      dashboard: "Prescribing Dashboard",
+      checklists: "Safety Checklists",
+      transfer: "Transfer Assessment",
+      "proto-core": "Core Checks Protocol",
+      "proto-scr": "SCR Screening",
+      "proto-pue": "Previous Use Evidence",
+      "proto-titration": "Titration & Gap Treatment",
+      "proto-weight": "Weight Monitoring",
+      "proto-switching": "Switching & Side Effects",
+      "proto-reviews": "6 Month Reviews",
+      consultation: "Consultation Questions",
+      definitions: "Definitions",
+      contraindications: "Contraindications",
+      "titration-guide": "Titration Guide",
+      rejections: "Rejection Reasons",
+      tags: "Tags Reference",
+    };
+
+    const pageIds = Object.keys(titles);
+    const index = [];
+
+    const htmlToText = (html) => {
+      const div = document.createElement("div");
+      div.innerHTML = html || "";
+      return (div.innerText || "").replace(/\s+/g, " ").trim();
+    };
+
+    const getHtml = (pageId) => {
+      // Mirrors ContentManager.loadPage switch, without touching the DOM.
+      switch (pageId) {
+        case "dashboard":
+          return ContentManager.getDashboardContent();
+        case "checklists":
+          return ContentManager.getChecklistsContent();
+        case "transfer":
+          return ContentManager.getTransferContent();
+        case "proto-core":
+          return ContentManager.getProtocolContent("core");
+        case "proto-scr":
+          return ContentManager.getProtocolContent("scr");
+        case "proto-pue":
+          return ContentManager.getProtocolContent("pue");
+        case "proto-titration":
+          return ContentManager.getProtocolContent("titration");
+        case "proto-weight":
+          return ContentManager.getProtocolContent("weight");
+        case "proto-switching":
+          return ContentManager.getProtocolContent("switching");
+        case "proto-reviews":
+          return ContentManager.getProtocolContent("reviews");
+        case "consultation":
+          return ContentManager.getConsultationContent();
+        case "definitions":
+          return ContentManager.getDefinitionsContent();
+        case "contraindications":
+          return ContentManager.getContraindicationsContent();
+        case "titration-guide":
+          return ContentManager.getTitrationGuideContent();
+        case "rejections":
+          return ContentManager.getRejectionsContent();
+        case "tags":
+          return ContentManager.getTagsContent();
+        default:
+          return "";
+      }
+    };
+
+    pageIds.forEach((pageId) => {
+      try {
+        const html = getHtml(pageId);
+        index.push({
+          pageId,
+          title: titles[pageId] || pageId,
+          text: htmlToText(html),
+        });
+      } catch (e) {
+        // If any page generator throws, skip it rather than breaking the whole search.
+      }
+    });
+
+    this.allTabsTextIndex = index;
+  },
+
+  computeAllTabsCounts(terms) {
+    if (!terms || terms.length === 0) {
+      return { total: 0, perPage: [] };
+    }
+
+    if (!this.allTabsTextIndex) {
+      this.buildAllTabsTextIndex();
+    }
+
+    const countInText = (text, term) => {
+      if (!text || !term) return 0;
+      const re = new RegExp(this.escapeRegex(term), "gi");
+      const m = text.match(re);
+      return m ? m.length : 0;
+    };
+
+    const perPage = (this.allTabsTextIndex || [])
+      .map((p) => {
+        const count = terms.reduce((acc, t) => acc + countInText(p.text, t), 0);
+        return { pageId: p.pageId, title: p.title, count };
+      })
+      .filter((p) => p.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    const total = perPage.reduce((acc, p) => acc + p.count, 0);
+    return { total, perPage };
+  },
+
+  clearHighlightsInScope(scopeEl, highlightClass) {
+    if (!scopeEl) return;
+    scopeEl.querySelectorAll(`mark.find-highlight.${highlightClass}`).forEach((m) => {
+      m.replaceWith(document.createTextNode(m.textContent || ""));
+    });
+  },
+
+  highlightTermsInScope(scopeEl, terms, highlightClass) {
+    if (!scopeEl || !terms || terms.length === 0) return [];
+
+    const createdMarks = [];
+
+    const shouldSkipNode = (node) => {
+      if (!node || !node.parentElement) return true;
+      const p = node.parentElement;
+      if (p.closest(".search-container")) return true;
+      if (p.closest(".search-results")) return true;
+      if (p.closest(".local-search-container")) return true;
+      if (p.closest("script, style, textarea, input, select")) return true;
+      if (p.closest("mark.find-highlight")) return true;
+      return false;
+    };
+
+    const wrapMatchesInTextNode = (textNode, term) => {
+      const text = textNode.nodeValue;
+      if (!text) return;
+
+      const re = new RegExp(this.escapeRegex(term), "gi");
+      const matches = [...text.matchAll(re)];
+      if (matches.length === 0) return;
+
+      const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+      matches.forEach((m) => {
+        const start = m.index;
+        const end = start + m[0].length;
+
+        if (start > lastIndex) {
+          frag.appendChild(document.createTextNode(text.slice(lastIndex, start)));
+        }
+
+        const mark = document.createElement("mark");
+        mark.className = `find-highlight ${highlightClass}`;
+        mark.textContent = text.slice(start, end);
+        frag.appendChild(mark);
+        createdMarks.push(mark);
+
+        lastIndex = end;
+      });
+
+      if (lastIndex < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      }
+
+      textNode.replaceWith(frag);
+    };
+
+    // Apply each term separately to keep the logic simple.
+    terms.forEach((term) => {
+      const walker = document.createTreeWalker(scopeEl, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => {
+          if (!node.nodeValue || !node.nodeValue.trim()) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (shouldSkipNode(node)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        },
+      });
+
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach((n) => wrapMatchesInTextNode(n, term));
+    });
+
+    return createdMarks;
+  },
+
+  updateOccurrenceUI(mode) {
+    const state = mode === "local" ? this.localFindState : this.globalFindState;
+    const controlsId =
+      mode === "local" ? "localOccurrenceControls" : "occurrenceControls";
+    const countId = mode === "local" ? "localOccurrenceCount" : "occurrenceCount";
+
+    const controlsEl = document.getElementById(controlsId);
+    const countEl = document.getElementById(countId);
+
+    const total = state.marks.length;
+    if (!controlsEl || !countEl) return;
+
+    if (total === 0) {
+      controlsEl.style.display = "none";
+      countEl.textContent = "0/0";
+      return;
+    }
+
+    controlsEl.style.display = "flex";
+    const current = state.index >= 0 ? state.index + 1 : 0;
+
+    let suffix = "";
+    if (
+      mode === "global" &&
+      this.latestFindSummary &&
+      typeof this.latestFindSummary.allTabsTotal === "number"
+    ) {
+      suffix = ` • all ${this.latestFindSummary.allTabsTotal}`;
+    }
+
+    countEl.textContent = `${current}/${total}${suffix}`;
+  },
+
+  setActiveOccurrence(mode) {
+    const state = mode === "local" ? this.localFindState : this.globalFindState;
+    const activeClass =
+      mode === "local" ? "find-highlight--active-local" : "find-highlight--active-global";
+    const baseClass =
+      mode === "local" ? "find-highlight--local" : "find-highlight--global";
+
+    state.marks.forEach((m) => m.classList.remove(activeClass));
+
+    if (!state.marks.length || state.index < 0) {
+      this.updateOccurrenceUI(mode);
+      return;
+    }
+
+    const mark = state.marks[state.index];
+    if (mark) {
+      mark.classList.add(activeClass);
+      // Ensure base class is present (in case the DOM got re-rendered)
+      if (!mark.classList.contains(baseClass)) mark.classList.add(baseClass);
+      mark.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    this.updateOccurrenceUI(mode);
+  },
+
+  gotoOccurrence(direction, mode = "global") {
+    const state = mode === "local" ? this.localFindState : this.globalFindState;
+    if (!state.marks.length) {
+      this.updateOccurrenceUI(mode);
+      return;
+    }
+
+    const total = state.marks.length;
+    if (state.index < 0) state.index = 0;
+    state.index = (state.index + direction + total) % total;
+    this.setActiveOccurrence(mode);
+  },
+
+  runFind(rawQuery, { mode, scopeEl, controls, highlightClass }) {
+    const state = mode === "local" ? this.localFindState : this.globalFindState;
+    const terms = this.getQueryTerms(rawQuery);
+
+    // Clear existing highlights of the same mode
+    this.clearHighlightsInScope(scopeEl, highlightClass);
+
+    state.terms = terms;
+    state.marks = [];
+    state.index = -1;
+
+    if (!terms.length) {
+      this.updateOccurrenceUI(mode);
+      return;
+    }
+
+    state.marks = this.highlightTermsInScope(scopeEl, terms, highlightClass);
+    state.index = state.marks.length ? 0 : -1;
+    this.setActiveOccurrence(mode);
   },
 
   buildSearchIndex() {
@@ -602,19 +946,39 @@ const SearchManager = {
     if (!query || query.trim().length < 2) {
       this.hideResults();
       if (searchClear) searchClear.style.display = "none";
+
+      // Also clear Ctrl+F style highlights
+      const scopeEl = document.getElementById("contentArea");
+      this.clearHighlightsInScope(scopeEl, "find-highlight--global");
+      this.globalFindState.terms = [];
+      this.globalFindState.marks = [];
+      this.globalFindState.index = -1;
+      this.updateOccurrenceUI("global");
+      this.latestFindSummary = null;
       return;
     }
 
     if (searchClear) searchClear.style.display = "flex";
 
-    // Parse multiple terms - split by common separators
-    const terms = query
-      .toLowerCase()
-      .split(/[,;\.\-\/\|]/)
-      .map((term) => term.trim())
-      .filter((term) => term.length > 1);
+    // Parse multiple terms - split by common separators (incl. new lines)
+    const terms = this.getQueryTerms(query);
 
     const results = this.search(terms);
+
+    const allTabs = this.computeAllTabsCounts(terms);
+    const currentPageId = AppState.currentPage || "";
+    const currentTabCount = (allTabs.perPage || []).find(
+      (p) => p.pageId === currentPageId
+    )
+      ? (allTabs.perPage || []).find((p) => p.pageId === currentPageId).count
+      : 0;
+    this.latestFindSummary = {
+      currentTabCount,
+      allTabsTotal: allTabs.total,
+      perPage: allTabs.perPage || [],
+      rawQuery: query,
+    };
+
     this.displayResults(results, query);
   },
 
@@ -706,8 +1070,35 @@ const SearchManager = {
       document.querySelector(".search-container").appendChild(this.resultsContainer);
     }
 
+    const summary = this.latestFindSummary;
+    const summaryLine = summary
+      ? `<div class="search-results-subheader">This tab: <strong>${summary.currentTabCount}</strong> • All tabs: <strong>${summary.allTabsTotal}</strong></div>`
+      : "";
+
+    const tabMatches =
+      summary && summary.perPage && summary.perPage.length
+        ? `
+        <div class="search-results-tabs">
+          <div class="search-results-tabs-title">Matches by tab</div>
+          ${summary.perPage
+            .slice(0, 8)
+            .map(
+              (p) => `
+                <button class="search-tab-match" data-page="${p.pageId}" type="button">
+                  <span class="search-tab-match-title">${p.title}</span>
+                  <span class="search-tab-match-count">${p.count}</span>
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+      `
+        : "";
+
     if (results.length === 0) {
       this.resultsContainer.innerHTML = `
+        ${summaryLine}
+        ${tabMatches}
         <div class="search-no-results">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/>
@@ -718,6 +1109,18 @@ const SearchManager = {
         </div>
       `;
       this.resultsContainer.classList.add("active");
+
+      // Attach tab-match click handlers even when there are no structured results
+      this.resultsContainer
+        .querySelectorAll(".search-tab-match[data-page]")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const pageId = btn.dataset.page;
+            this.pendingNavigation = { pageId, sectionId: null, rawQuery: originalQuery };
+            NavigationManager.goToPage(pageId);
+            this.hideResults();
+          });
+        });
       return;
     }
 
@@ -725,6 +1128,8 @@ const SearchManager = {
       <div class="search-results-header">${results.length} result${
       results.length !== 1 ? "s" : ""
     } found</div>
+      ${summaryLine}
+      ${tabMatches}
       ${results.map((result) => this.createResultHTML(result, originalQuery)).join("")}
     `;
 
@@ -737,24 +1142,27 @@ const SearchManager = {
       .forEach((item, index) => {
         item.addEventListener("click", () => {
           const result = results[index];
+          this.pendingNavigation = {
+            pageId: result.page,
+            sectionId: result.sectionId || null,
+            rawQuery: originalQuery,
+          };
+
           NavigationManager.goToPage(result.page);
+          // Keep the query in the search box (Ctrl+F behavior), just close dropdown.
+          this.hideResults();
+        });
+      });
 
-          // Scroll to specific section if sectionId exists
-          if (result.sectionId) {
-            setTimeout(() => {
-              const section = document.getElementById(result.sectionId);
-              if (section) {
-                section.scrollIntoView({ behavior: "smooth", block: "start" });
-                // Add highlight animation
-                section.style.animation = "highlight-pulse 2s ease-in-out";
-                setTimeout(() => {
-                  section.style.animation = "";
-                }, 2000);
-              }
-            }, 100);
-          }
-
-          this.clearSearch();
+    // Tab match click handlers
+    this.resultsContainer
+      .querySelectorAll(".search-tab-match[data-page]")
+      .forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const pageId = btn.dataset.page;
+          this.pendingNavigation = { pageId, sectionId: null, rawQuery: originalQuery };
+          NavigationManager.goToPage(pageId);
+          this.hideResults();
         });
       });
   },
@@ -775,11 +1183,7 @@ const SearchManager = {
   highlightText(text, query) {
     if (!query) return text;
 
-    const terms = query
-      .toLowerCase()
-      .split(/[,;\.\-\/\|]/)
-      .map((term) => term.trim())
-      .filter((term) => term.length > 1);
+    const terms = this.getQueryTerms(query);
 
     let highlightedText = text;
 
@@ -804,10 +1208,124 @@ const SearchManager = {
   clearSearch() {
     const searchInput = document.getElementById("globalSearch");
     const searchClear = document.getElementById("searchClear");
+    const scopeEl = document.getElementById("contentArea");
+
+    // Clear global highlights
+    this.clearHighlightsInScope(scopeEl, "find-highlight--global");
+    this.globalFindState.terms = [];
+    this.globalFindState.marks = [];
+    this.globalFindState.index = -1;
+    this.updateOccurrenceUI("global");
 
     if (searchInput) searchInput.value = "";
     if (searchClear) searchClear.style.display = "none";
     this.hideResults();
+  },
+
+  // Called after ContentManager renders a page
+  onPageRendered(pageId) {
+    // If the global search box has a query, re-apply Ctrl+F highlights on the new content
+    const searchInput = document.getElementById("globalSearch");
+    const raw = searchInput ? searchInput.value : "";
+    const scopeEl = document.getElementById("contentArea");
+    if (raw && raw.trim().length >= 2) {
+      this.runFind(raw, {
+        mode: "global",
+        scopeEl,
+        controls: { controlsId: "occurrenceControls", countId: "occurrenceCount" },
+        highlightClass: "find-highlight--global",
+      });
+    }
+
+    // Set up contraindications local search when that page is shown
+    if (pageId === "contraindications") {
+      this.initContraindicationsLocalSearch();
+    }
+
+    // If navigation was triggered by search, scroll to the target section (if any)
+    if (this.pendingNavigation && this.pendingNavigation.pageId === pageId) {
+      const { sectionId } = this.pendingNavigation;
+      if (sectionId) {
+        setTimeout(() => {
+          const section = document.getElementById(sectionId);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+            section.style.animation = "highlight-pulse 2s ease-in-out";
+            setTimeout(() => {
+              section.style.animation = "";
+            }, 2000);
+          }
+        }, 80);
+      }
+      this.pendingNavigation = null;
+    }
+  },
+
+  initContraindicationsLocalSearch() {
+    const input = document.getElementById("contraindicationsSearch");
+    const clearBtn = document.getElementById("localSearchClear");
+    const prevBtn = document.getElementById("localPrevOccurrence");
+    const nextBtn = document.getElementById("localNextOccurrence");
+    const scopeEl = document.getElementById("contentArea");
+
+    if (!input || input.dataset.initialized === "true") {
+      return;
+    }
+    input.dataset.initialized = "true";
+
+    const run = (rawQuery) => {
+      // Clear global highlights when local search is used, to prevent nested marks.
+      this.clearHighlightsInScope(scopeEl, "find-highlight--global");
+      this.globalFindState.terms = [];
+      this.globalFindState.marks = [];
+      this.globalFindState.index = -1;
+      this.updateOccurrenceUI("global");
+
+      this.runFind(rawQuery, {
+        mode: "local",
+        scopeEl,
+        controls: {
+          controlsId: "localOccurrenceControls",
+          countId: "localOccurrenceCount",
+        },
+        highlightClass: "find-highlight--local",
+      });
+
+      if (clearBtn) {
+        clearBtn.style.display = rawQuery && rawQuery.trim().length ? "flex" : "none";
+      }
+    };
+
+    input.addEventListener(
+      "input",
+      Utils.debounce((e) => run(e.target.value), 180)
+    );
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        input.value = "";
+        run("");
+        if (clearBtn) clearBtn.style.display = "none";
+        return;
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (e.shiftKey) this.gotoOccurrence(-1, "local");
+        else this.gotoOccurrence(1, "local");
+      }
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        run("");
+        clearBtn.style.display = "none";
+      });
+    }
+
+    if (prevBtn)
+      prevBtn.addEventListener("click", () => this.gotoOccurrence(-1, "local"));
+    if (nextBtn) nextBtn.addEventListener("click", () => this.gotoOccurrence(1, "local"));
   },
 };
 
@@ -965,6 +1483,10 @@ const ContentManager = {
 
       contentArea.innerHTML = content;
       this.attachEventListeners(pageId);
+
+      if (typeof SearchManager !== "undefined" && SearchManager.onPageRendered) {
+        SearchManager.onPageRendered(pageId);
+      }
     }, 50);
   },
 
@@ -2984,7 +3506,40 @@ const ContentManager = {
   getContraindicationsContent() {
     return `
       <div class="protocol-page">
-        <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 24px;">Contraindications</h1>
+        <div class="page-header-with-search">
+          <h1 style="font-size: 24px; font-weight: 700; margin: 0;">Contraindications</h1>
+          <div class="local-search-container">
+            <svg class="local-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input
+              type="text"
+              id="contraindicationsSearch"
+              class="local-search-input"
+              placeholder="Search within contraindications..."
+            />
+            <div id="localOccurrenceControls" class="occurrence-controls" style="display: none;">
+              <span id="localOccurrenceCount" class="occurrence-count">0/0</span>
+              <button id="localPrevOccurrence" class="occurrence-nav" title="Previous">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button id="localNextOccurrence" class="occurrence-nav" title="Next">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+            </div>
+            <button id="localSearchClear" class="search-clear" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
 
         <div class="info-card red" style="margin-bottom: 20px;">
           <div style="display: flex; align-items: center; gap: 10px;">

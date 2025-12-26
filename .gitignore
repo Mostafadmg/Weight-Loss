@@ -3,6 +3,12 @@ glp1-prescribing-portal (1).html
 old-glp.html
 package-lock.json
 
+# Dependencies
+node_modules/
+
 # Ignore system files
 .DS_Store
 Thumbs.db
+
+# Local artifacts / notes
+scr_sop_extracted.txt

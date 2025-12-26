@@ -1,0 +1,16 @@
+{
+  "name": "weight-loss-prescribing-portal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "build:standalone": "node scripts/build-standalone.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pdf-parse": "^1.1.4"
+  }
+}

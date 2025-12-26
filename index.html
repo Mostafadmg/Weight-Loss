@@ -221,6 +221,33 @@
                 placeholder="Search conditions, medications, BMI, protocols..."
                 aria-label="Global search"
               />
+              <div
+                id="occurrenceControls"
+                class="occurrence-controls"
+                style="display: none"
+              >
+                <span id="occurrenceCount" class="occurrence-count">0/0</span>
+                <button id="prevOccurrence" class="occurrence-nav" title="Previous">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+                <button id="nextOccurrence" class="occurrence-nav" title="Next">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              </div>
               <button
                 class="search-clear"
                 id="searchClear"
