@@ -1,0 +1,253 @@
+Yep — I’ll teach you the **MedExpress 4/6-month (periodic) review** workflow **from start to finish**, exactly as it’s laid out in the **“6 Months periodic review” SOP** you uploaded.
+
+(Quick heads-up: my searchable index says some older uploaded files have expired, but I *can* still read this periodic review SOP content and walk you through it end-to-end. If you want me to also cross-check the referenced **SOP-045** wording, re-upload that specific SOP if you have it.)
+
+---
+
+## 1) What the “6-month review” actually is
+
+This SOP calls it a **periodic review**. It’s a structured checkpoint to decide whether a patient can **continue GLP-1** under UK product licence expectations.
+
+### The clock starts from:
+
+**The customer’s first GLP-1 order** — **even if it was with another provider**.
+If they transfer to you already having had:
+
+* **Mounjaro/Wegovy:** **6+ months** elsewhere → periodic review is requested on their **first order with you**
+* **Nevolat (liraglutide):** **4+ months** elsewhere → periodic review is requested on their **first order with you**
+  Also: the schedule **resets when a patient switches GLP-1 drug**.
+
+---
+
+## 2) Who gets forced into a periodic review (and when)
+
+### If they have **NOT achieved ≥5% weight loss**:
+
+* **Mounjaro/Wegovy:** after **6 months** use
+* **Nevolat:** after **4 months** use
+
+They must complete the periodic review **within a time window**:
+
+* **Mounjaro/Wegovy:** between **month 6 and month 10**
+* **Nevolat:** between **month 4 and month 8**
+
+### If they **HAVE achieved ≥5% weight loss**
+
+They’re **not required** to do it — but it remains **optional**:
+
+* **Mounjaro/Wegovy:** optional at **6-monthly intervals**
+* **Nevolat:** optional at **4-monthly intervals**
+
+### What happens if they ignore it
+
+They’re **auto-notified via CRM** to complete it in their dashboard.
+
+* **Mounjaro/Wegovy:** they have until **month 10**
+* **Nevolat:** they have until **month 8**
+  If no response by the deadline:
+* **subsequent orders are placed on hold**
+* **“incomplete periodic review”** tag is added automatically
+* Customer Support follows them up
+
+---
+
+## 3) What the patient actually fills in (so you know what you’re reviewing)
+
+The periodic review questionnaire asks:
+
+1. Are you losing weight at a rate you’re happy with?
+2. Side effects in last 2 weeks (some are flagged as **urgent**)
+3. New medications / new diagnoses since starting
+4. Health benefits noticed (waist, mood, mobility, etc.)
+5. Weekly injection schedule adherence
+6. Diet changes
+7. Activity changes
+8. Anything else that may impact weight loss
+
+**Important SOP point:**
+✅ **Do NOT request a photo** for periodic review. Photos are required at initial order, **not** for continuing at periodic review.
+
+---
+
+## 4) What YOU do when it lands on your desk (the real workflow)
+
+### Step A — Triage: is it urgent?
+
+If the patient selected an **urgent side effect** (⚠️ flagged options), the periodic review appears in the **Urgent queue**.
+
+**Action:**
+
+* Must be reviewed by a **Senior Prescriber within 8 working hours**
+* The customer may need urgent medical input
+
+If urgent:
+
+1. **Telephone contact within 8 working hours**
+2. Add tag **Pending Customer Response** if you can’t reach
+3. If you can’t reach, **email** them
+4. Submit a **Patient Safety Incident**
+
+   * Category: **Clinically Significant Side Effects**
+   * Select the correct option for **“Did these side effects require medical attention?”**
+5. Duty GP reviews the incident
+
+If **non-urgent** side effect:
+
+* Use the **Side Effect Macros** to contact them if needed
+* **Do not** put the order on hold purely for non-urgent side effects
+* You can usually still prescribe (assuming no contraindications)
+
+---
+
+### Step B — Do the 4 prescriber checks (this is the “core”)
+
+The SOP’s detailed checks are basically:
+
+#### 1) Weight loss checkpoint (licensing logic)
+
+A patient should have lost **≥5%** of initial body weight by:
+
+* **6 months** (Mounjaro/Wegovy)
+* **4 months** (Nevolat)
+
+If they **fail** this, your next steps depend on *how much* they lost:
+
+##### ✅ If weight loss is **≥5%**
+
+* Periodic review not mandatory (unless they chose to do it)
+* Proceed normally
+
+##### 🟠 If weight loss is **3–5%**
+
+SOP allows *possible continuation* **if there’s a reasonable explanation**, e.g.:
+
+* Evidence of muscle gain / waist reduction / increased resistance exercise
+* Improvements in heart health
+* Suboptimal compliance due to scheduling or manageable side effects
+* Steady downward trajectory (not flat)
+* Not reached maximum dose yet
+* Gaps in treatment affecting progress
+* Switched GLP-1 and hasn’t completed full 4/6 months on the new one
+* Side effects limited titration
+
+If you continue despite <5%:
+✅ **Add a critical note** explaining why you continued + flag future prescribers to monitor weight loss closely.
+
+##### 🔴 If weight loss is **<3%**
+
+* SOP says **contact customer for a detailed assessment**
+* Tag **Pending Customer Response**
+* Use the info-gathering approach (diet, activity, adherence, gaps, side effects, new conditions/meds, etc.)
+
+There’s even a call script in the SOP for **0–3% weight loss**, including:
+
+* ID check (DOB + postcode)
+* Confirm current height/weight
+* Diet pattern and activity (with time categories)
+* Adherence, gaps, side effects
+* Any other reason for not losing weight
+* Whether they’d consider an oral option like **orlistat** if GLP-1 can’t continue
+
+##### ⛔ If overall weight is **unchanged or increased**
+
+SOP is clear:
+
+* If weight remains unchanged or has increased after **4/6 months**, tell them the medication is **no longer suitable** under licensing requirements and **cannot be continued** → cancel order.
+
+---
+
+#### 2) Side effects check
+
+* Ensure side effects are appropriately handled
+* Urgent = **phone + safety incident**
+* Non-urgent = **side effect macros**, usually do not hold
+
+---
+
+#### 3) New conditions / new meds check
+
+If they report anything new:
+
+* Refer to the **GLP-1 Knowledge Base** (per SOP)
+* If not a contraindication, document it
+* If unsure → **escalate to senior prescriber**
+
+---
+
+#### 4) Compliance check (weekly injections)
+
+They should be adhering to the schedule.
+
+If non-compliance is due to:
+
+* Side effects already dealt with → proceed to next check
+* Scheduling issues but weight loss adequate → proceed
+* Side effects *not captured earlier* → email to clarify + tag **Pending Customer Response**
+
+---
+
+## 5) Exemptions (so you don’t incorrectly block people)
+
+### A) Transfers from other providers (exemption)
+
+A transferred patient can be **exempt** from immediate periodic review if they meet **all 3**:
+
+1. Start date on previous use form is **>7 months ago**
+2. **No side effects** reported on previous use form
+3. Latest weight is **>5% less** than starting weight on previous upload form
+
+Also: breaks due to **pregnancy** are exempt.
+
+If they don’t meet all 3 → invite to periodic review once they reach the 4/6-month mark (some may be asked earlier if side effects/poor weight loss).
+
+### B) Gaps in treatment (manual exemption)
+
+SOP says the system currently **doesn’t account for gaps**, so prescribers may need to **manually exempt**.
+
+Manual exemption can apply if **all 3**:
+
+1. Treatment gap **>12 weeks**
+2. Restarted at the **lowest dose**
+3. Since restarting, they’ve had **<3 months** treatment
+
+If not all 3 → they complete periodic review at the standard 4/6-month mark from **first ever** treatment start date.
+
+---
+
+## 6) How you close it properly (people forget this)
+
+Once satisfied:
+
+1. Document in Notes: **“Complete In depth review at 4/6 months”**
+2. Click **“Mark Resolved”**
+3. Then proceed with reviewing their next order in line with **SOP-045**
+
+---
+
+## 7) The “cheat sheet” you should have in your head
+
+When you open a periodic review, ask yourself in this order:
+
+1. **Urgent side effect flag?**
+
+   * Yes → urgent queue rules + phone within 8 working hours + safety incident
+2. **Weight loss % at the mark?**
+
+   * ≥5% → proceed
+   * 3–5% → continue only if clear justification; add critical note
+   * <3% → contact + pending response
+   * unchanged/increased → stop + cancel
+3. **Any new meds/conditions?**
+
+   * If unsure → senior prescriber
+4. **Adherence ok?**
+
+   * If not, why? (side effects vs scheduling vs other)
+
+---
+
+If you want, I can now do one of these (pick what helps you most):
+
+* Build you a **one-page “6-month review checklist”** you can paste next to your screen
+* Write you **standardised prescriber note templates** for each outcome (≥5%, 3–5% continue, <3% pending response, unchanged/increase stop)
+* Create a **decision flow diagram** in plain text (super fast to follow mid-shift)
